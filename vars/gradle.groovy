@@ -1,37 +1,38 @@
-
 def call(List<String> paramsAllowedStage){
+    paramAllowed.each {
+    println 'elementoLista:'+it
+    }
        
-		stage('Build & Unit Test'){
-			//if (paramsAllowedStage.any(it=='build'))
-			//{
+	stage('Build & Unit Test'){
+			
 				
 				STAGE=env.STAGE_NAME
 				sh 'env'
-            			sh './gradlew clean build'
+            	sh './gradlew clean build'
 				println "Stage: ${env.STAGE_NAME}"
-			//}
-		}
+			
+	}
 	
-		stage('Sonar'){
+	stage('Sonar'){
             		STAGE=env.STAGE_NAME
             		def scannerHome = tool 'sonar-scanner';
             		withSonarQubeEnv('sonar-server') {
                 	sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build -Dsonar.sources=src"
             		}
          	}
-		stage('Run'){
+	stage('Run'){
 		    	STAGE=env.STAGE_NAME
-			println "Stage: ${env.STAGE_NAME}"
-            		sh "nohup bash gradlew bootRun & "
-            		sleep 80
+			    println "Stage: ${env.STAGE_NAME}"
+            	sh "nohup bash gradlew bootRun & "
+            	sleep 80
 			
 		}
-		stage('Test'){
+	stage('Test'){
 			STAGE=env.STAGE_NAME
 			println "Stage: ${env.STAGE_NAME}"
             		sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
-		}
-	    	stage('nexus') {
+	}
+	stage('nexus') {
             		STAGE=env.STAGE_NAME
             		nexusPublisher nexusInstanceId: 'test-repo',
             		nexusRepositoryId: 'test-repo',
