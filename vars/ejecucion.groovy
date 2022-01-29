@@ -59,7 +59,7 @@ def call(String paramStage){
 
 }
 def getStageForExecution(String params){
-   return params.split(';');
+  return params.split(';').ToList();
  
 }
 
