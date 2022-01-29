@@ -24,8 +24,9 @@ def call(String paramStage){
                                         println params.buildTool
 
                                         if(params.buildTool=='gradle'){
-                                            println 'Ejecutar gradle'
-                                                gradle(paramStage)
+                                           println 'Ejecutar gradle'
+                                           println paramStage
+                                           gradle(paramStage)
 
                                         }
                                         else{
