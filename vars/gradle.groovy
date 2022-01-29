@@ -1,8 +1,7 @@
-def call(List<String> paramsAllowedStage){
-    paramAllowed.each {
-    println 'elementoLista:'+it
-    }
-       
+def call(){
+   
+       List<String> paramsAllowedStage=PARAMALLOWED
+	
 	stage('Build & Unit Test'){
 			
 				
