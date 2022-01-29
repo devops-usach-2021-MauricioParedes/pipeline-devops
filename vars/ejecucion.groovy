@@ -20,12 +20,12 @@ def call(String paramStage){
 
                     try{
                     println 'Pipeline'
-                    println '2-'+ paramStage
+                    
                                         println params.buildTool
 
                                         if(params.buildTool=='gradle'){
                                             println 'Ejecutar gradle'
-                                                gradle()
+                                                gradle(paramStage)
 
                                         }
                                         else{
