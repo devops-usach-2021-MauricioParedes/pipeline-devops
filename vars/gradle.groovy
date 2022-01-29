@@ -4,7 +4,7 @@ def call(List<String> paramsAllowedStage){
                         println 'elementogradle:'+it
           }
    	println '------- test 1 ----------'
-       	if (paramsAllowedStage.any(it=='build'))
+	if (paramsAllowedStage.any{it=='build'})
 	{
 		println '------- test 2 ----------'
 		stage('Build & Unit Test'){
