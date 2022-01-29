@@ -1,4 +1,8 @@
 def call(List<String> paramsAllowedStage){
+	
+	paramAllowed.each {
+                        println 'elementogradle:'+it
+          }
    
        	
 	stage('Build & Unit Test'){
