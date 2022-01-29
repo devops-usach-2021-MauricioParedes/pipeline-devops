@@ -70,16 +70,29 @@ def call(){
 
 }
 def getStageForExecution(String params){
+ def stages=[STAGE_BUILD,STAGE_SONAR,STAGE_RUN,STAGE_TEST,STAGE_NEXUS]
  if(params=='')
  {
-  def stages=[STAGE_BUILD,STAGE_SONAR,STAGE_RUN,STAGE_TEST,STAGE_NEXUS]
-  return stages
+    return stages
  }
  else
  {
-  println "Ejecución fallida por validacion"
-   error "Ejecución fallida por validacion"
-   //return params.split(';').toList();
+  def stagesSelected=params.split(';').toList()
+  if(stagesSelected.each{stages.any(it)==false})
+  {
+   error "stage not found. You can select {$STAGE_BUILD};{$STAGE_TEST};{$STAGE_RUN};{$STAGE_SONAR};{$STAGE_NEXUS}"
+    println "stage not found"
+    return
+  }
+  
+  if(stages.any{it==STAGE_NEXUS} && !stages.any{it==STAGE_BUILD})
+  {
+    error "If you select ${STAGE_BUILD} you need use ${STAGE_BUILD} too"
+    println "Ejecución fallida por validacion"
+    return
+   
+  }
+  return stagesSelected
  }
   
  
