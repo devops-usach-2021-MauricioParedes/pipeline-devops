@@ -78,28 +78,30 @@ def getStageForExecution(String params){
  else
  {
   def stagesSelected=params.split(';').toList()
-  if(stagesSelected.each{ val-> stages.any{it==val}==false})
-  {
-   error "stage not found. You can select ${STAGE_BUILD};${STAGE_TEST};${STAGE_RUN};${STAGE_SONAR};${STAGE_NEXUS}"
-    println "stage not found"
-    return
+  stagesSelected.each{ val-> 
+    if(stages.any{it==val}==false)
+    {
+       error "stage not found. You can select ${STAGE_BUILD};${STAGE_TEST};${STAGE_RUN};${STAGE_SONAR};${STAGE_NEXUS}"
+       println "stage not found"
+      return
+    }
   }
   
-  if(stages.any{it==STAGE_NEXUS} && !stages.any{it==STAGE_BUILD})
+  if(stagesSelected.any{it==STAGE_NEXUS} && !stagesSelected.any{it==STAGE_BUILD})
   {
     error "If you select ${STAGE_NEXUS} you need use ${STAGE_BUILD} too"
     println "Ejecución fallida por validacion"
     return
    
   }
-  if(stages.any{it==STAGE_RUN} && !stages.any{it==STAGE_BUILD})
+  if(stagesSelected.any{it==STAGE_RUN} && !stagesSelected.any{it==STAGE_BUILD})
   {
     error "If you select ${STAGE_RUN} you need use ${STAGE_BUILD} too"
     println "Ejecución fallida por validacion"
     return
    
   }
-  if(stages.any{it==STAGE_TEST} && !stages.any{it==STAGE_RUN})
+  if(stagesSelected.any{it==STAGE_TEST} && !stagesSelected.any{it==STAGE_RUN})
   {
     error "If you select ${STAGE_TEST} you need use ${STAGE_RUN} too"
     println "Ejecución fallida por validacion"
