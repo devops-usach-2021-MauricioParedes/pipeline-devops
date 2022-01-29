@@ -1,7 +1,6 @@
-def call(){
+def call(List<String> paramsAllowedStage){
    
-       List<String> paramsAllowedStage=PARAMALLOWED
-	
+       	
 	stage('Build & Unit Test'){
 			
 				
