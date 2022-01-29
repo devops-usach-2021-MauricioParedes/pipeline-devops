@@ -1,6 +1,7 @@
 
 def call(String paramStage){
  println paramStage
+ List<String> paramAllowed=getStageForExecution(paramStage)
  pipeline {
 
         agent any
@@ -56,6 +57,10 @@ def call(String paramStage){
  
     
 
+}
+def getStageForExecution(String params){
+   return params.split(';');
+ 
 }
 
 return this;
