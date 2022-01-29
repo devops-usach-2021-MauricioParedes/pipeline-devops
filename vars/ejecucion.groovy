@@ -43,7 +43,7 @@ def call(){
                      }
                      else{
                       println 'Ejecutar maven'
-                      maven()
+                      maven.call(paramAllowed)
                        
 
                      }
