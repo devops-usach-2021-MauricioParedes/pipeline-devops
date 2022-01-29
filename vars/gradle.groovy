@@ -4,7 +4,7 @@ def call(List<String> paramsAllowedStage){
 		stage('Build & Unit Test'){
 			if (paramsAllowedStage.any(it==env.STAGE_NAME))
 			{
-				println 'gradle1:'+paramStage 
+				
 				STAGE=env.STAGE_NAME
 				sh 'env'
             			sh './gradlew clean build'
