@@ -1,3 +1,5 @@
+
+   
 def call(List<String> paramsAllowedStage){
   
   stage(STAGE_BUILD){
@@ -63,8 +65,9 @@ stage(STAGE_NEXUS){
     nexusPublisher nexusInstanceId: 'test-repo', 
     nexusRepositoryId: 'test-repo', 
     packages: [[$class: 'MavenPackage', 
-    mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]] }
-  }
+    mavenAssetList: [[classifier: '', extension: '', filePath: "${WORKSPACE}/build/DevOpsUsach2020-0.0.1.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]] 
+}
+  
   else
   {
     println '------- SKIPPED'+STAGE_NEXUS+' ----------'
