@@ -70,7 +70,17 @@ def call(){
 
 }
 def getStageForExecution(String params){
-  return params.split(';').toList();
+ if(params=='')
+ {
+  def stages=[STAGE_BUILD,STAGE_SONAR,STAGE_RUN,STAGE_TEST,STAGE_NEXUS]
+  return stages
+ }
+ else
+ {
+   error "Ejecución fallida por validacion"
+   //return params.split(';').toList();
+ }
+  
  
 }
 
