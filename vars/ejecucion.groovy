@@ -6,8 +6,7 @@ def call(String paramStage){
  paramAllowed.each {
     println 'elemento:'+it
  }
- 
- println "${paramAllowed}"
+  
  pipeline {
 
         agent any
@@ -32,7 +31,9 @@ def call(String paramStage){
 
                                         if(params.buildTool=='gradle'){
                                            println 'Ejecutar gradle'
-                                           println paramStage
+                                           paramAllowed.each {
+                                              println 'elemento-pipeline:'+it
+                                           }
                                            gradle(paramAllowed)
 
                                         }
