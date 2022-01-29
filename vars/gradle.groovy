@@ -1,13 +1,18 @@
 
-def call(){
-  
+def call(String paramStage){
+        println 'gradle:'+paramStage        
+	if (paramStage==env.STAGE_NAME){
 		stage('Build & Unit Test'){
-			STAGE=env.STAGE_NAME
-			sh 'env'
-            sh './gradlew clean build'
-			println "Stage: ${env.STAGE_NAME}"
-			
+			if (paramStage==env.STAGE_NAME)
+			{
+				println 'gradle1:'+paramStage 
+				STAGE=env.STAGE_NAME
+				sh 'env'
+            			sh './gradlew clean build'
+				println "Stage: ${env.STAGE_NAME}"
+			}
 		}
+	
 		stage('Sonar'){
             STAGE=env.STAGE_NAME
             def scannerHome = tool 'sonar-scanner';
