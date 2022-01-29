@@ -3,12 +3,14 @@ def call(List<String> paramsAllowedStage){
 	paramsAllowedStage.each {
                         println 'elementogradle:'+it
           }
-   
+   	println '------- test 1 ----------'
        	if (paramsAllowedStage.any(it=='build'))
 	{
+		println '------- test 2 ----------'
 		stage('Build & Unit Test'){
-			
+			println '------- test 3 ----------'
 				STAGE=env.STAGE_NAME
+				println '------- test 4 ----------'
 				sh 'env'
             			sh './gradlew clean build'
 				println "Stage: ${env.STAGE_NAME}"
