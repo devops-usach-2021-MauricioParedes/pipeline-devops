@@ -8,7 +8,11 @@ def call(){
 
         environment{
          STAGE=''
-         
+         STAGE_BUILD='build'
+         STAGE_TEST='test'
+         STAGE_SONAR='sonar'
+         STAGE_NEXUS='nexus'
+         STAGE_RUN='run'
        }
 
         parameters {
