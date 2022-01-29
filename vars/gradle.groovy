@@ -1,7 +1,7 @@
 
 def call(String paramStage){
         println 'gradle:'+paramStage        
-	if (paramStage==env.STAGE_NAME){
+	
 		stage('Build & Unit Test'){
 			if (paramStage==env.STAGE_NAME)
 			{
