@@ -8,7 +8,7 @@ def call(){
 
         environment{
          STAGE=''
-         PARAMALLOWED=[]
+         
        }
 
         parameters {
@@ -28,13 +28,13 @@ def call(){
                      paramAllowed.each {
                         println 'elemento:'+it
                      }
-                     PARAMALLOWED=paramAllowed
+                     
                     
                      println params.buildTool
 
                      if(params.buildTool=='gradle'){
                                            
-                          gradle('build')
+                          gradle.call(paramAllowed)
 
                      }
                      else{
