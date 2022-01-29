@@ -2,6 +2,8 @@
 def call(String paramStage){
  println paramStage
  List<String> paramAllowed=getStageForExecution(paramStage)
+ 
+ println "${paramAllowed}"
  pipeline {
 
         agent any
