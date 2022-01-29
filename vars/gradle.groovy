@@ -2,14 +2,14 @@
 def call(List<String> paramsAllowedStage){
        
 		stage('Build & Unit Test'){
-			if (paramsAllowedStage.any(it==env.STAGE_NAME))
-			{
+			//if (paramsAllowedStage.any(it=='build'))
+			//{
 				
 				STAGE=env.STAGE_NAME
 				sh 'env'
             			sh './gradlew clean build'
 				println "Stage: ${env.STAGE_NAME}"
-			}
+			//}
 		}
 	
 		stage('Sonar'){
