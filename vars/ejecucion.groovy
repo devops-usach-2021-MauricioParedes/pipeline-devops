@@ -2,6 +2,13 @@
 def call(String paramStage){
  println paramStage
  List<String> paramAllowed=getStageForExecution(paramStage)
+ paramAllowed.each{ key, value -> 
+  doSomethingWithKeyAndValue key, value
+}
+ 
+ paramAllowed.each {
+    println 'elemento:'+it
+ }
  
  println "${paramAllowed}"
  pipeline {
