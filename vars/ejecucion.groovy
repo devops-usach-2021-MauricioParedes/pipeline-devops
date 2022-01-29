@@ -1,5 +1,6 @@
 
-def call(){
+def call(String paramStage){
+ println paramStage
  pipeline {
 
         agent any
