@@ -1,6 +1,6 @@
 def call(List<String> paramsAllowedStage){
 	
-	paramAllowed.each {
+	paramsAllowedStage.each {
                         println 'elementogradle:'+it
           }
    
