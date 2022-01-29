@@ -13,11 +13,11 @@ def call(List<String> paramsAllowedStage){
 			}
 			else
 			{
-				println '------- SKIPPED build ----------'
+				println '------- SKIPPED'+STAGE_BUILD+' ----------'
 			}
 		}
 			
-		stage('Sonar'){
+		stage(STAGE_SONAR){
 			
 			if (paramsAllowedStage.any{it== env.STAGE_NAME})
 			{
@@ -28,11 +28,11 @@ def call(List<String> paramsAllowedStage){
 				}
 			}
 			else{
-				println '------- SKIPPED sonar ----------'
+				println '------- SKIPPED'+STAGE_SONAR+' ----------'
 			}
          	}
 		
-		stage('Run'){
+		stage(STAGE_RUN){
 			
 			if (paramsAllowedStage.any{it==env.STAGE_NAME})
 			{
@@ -43,12 +43,12 @@ def call(List<String> paramsAllowedStage){
 			}
 			else
 			{
-				println '------- SKIPPED run ----------'
+				println '------- SKIPPED'+STAGE_RUN+' ----------'
 			}
 			
 		}
 	
-		stage('Test'){
+		stage(STAGE_TEST){
 			
 			if (paramsAllowedStage.any{it==env.STAGE_NAME})
 			{
@@ -58,11 +58,11 @@ def call(List<String> paramsAllowedStage){
 			}
 			else
 			{
-				println '------- SKIPPED test ----------'
+				println '------- SKIPPED'+STAGE_TEST+' ----------'
 			}
 		}
 	
-		stage('nexus') {
+		stage(STAGE_NEXUS) {
 			
 			if (paramsAllowedStage.any{it==env.STAGE_NAME})
 			{
@@ -86,7 +86,7 @@ def call(List<String> paramsAllowedStage){
 			}
 			else
 			{
-				println '------- SKIPPED nexus ----------'
+				println '------- SKIPPED'+STAGE_NEXUS+' ----------'
 			}
             
         }
