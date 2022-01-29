@@ -78,7 +78,7 @@ def getStageForExecution(String params){
  else
  {
   def stagesSelected=params.split(';').toList()
-  if(stagesSelected.each{stages.any(it)==false})
+  if(stagesSelected.each{ val-> stages.any{it==val}==false})
   {
    error "stage not found. You can select {$STAGE_BUILD};{$STAGE_TEST};{$STAGE_RUN};{$STAGE_SONAR};{$STAGE_NEXUS}"
     println "stage not found"
