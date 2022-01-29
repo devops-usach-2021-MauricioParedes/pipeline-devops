@@ -1,8 +1,8 @@
 def call(List<String> paramsAllowedStage){
 		
-		stage('Build & Unit Test')
+		stage(STAGE_BUILD)
 		{
-			println '****'+env.STAGE_NAME
+			
 			if (paramsAllowedStage.any{it== env.STAGE_NAME})
 			{
 			
@@ -18,7 +18,7 @@ def call(List<String> paramsAllowedStage){
 		}
 			
 		stage('Sonar'){
-			println '****'+env.STAGE_NAME
+			
 			if (paramsAllowedStage.any{it== env.STAGE_NAME})
 			{
 				STAGE=env.STAGE_NAME
@@ -33,7 +33,7 @@ def call(List<String> paramsAllowedStage){
          	}
 		
 		stage('Run'){
-			println '****'+env.STAGE_NAME
+			
 			if (paramsAllowedStage.any{it==env.STAGE_NAME})
 			{
 		    		STAGE=env.STAGE_NAME
@@ -49,7 +49,7 @@ def call(List<String> paramsAllowedStage){
 		}
 	
 		stage('Test'){
-			println '****'+env.STAGE_NAME
+			
 			if (paramsAllowedStage.any{it==env.STAGE_NAME})
 			{
 				STAGE=env.STAGE_NAME
@@ -63,7 +63,7 @@ def call(List<String> paramsAllowedStage){
 		}
 	
 		stage('nexus') {
-			println '****'+env.STAGE_NAME
+			
 			if (paramsAllowedStage.any{it==env.STAGE_NAME})
 			{
 				STAGE=env.STAGE_NAME
