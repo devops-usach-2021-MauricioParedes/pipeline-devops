@@ -4,15 +4,20 @@ def call(List<String> paramsAllowedStage){
                         println 'elementogradle:'+it
           }
    
-       	
-	stage('Build & Unit Test'){
+       	if (paramsAllowedStage.any(it=='build'))
+	{
+		stage('Build & Unit Test'){
 			
-				
 				STAGE=env.STAGE_NAME
 				sh 'env'
-            	sh './gradlew clean build'
+            			sh './gradlew clean build'
 				println "Stage: ${env.STAGE_NAME}"
+		}
 			
+	}
+	else
+	{
+		println '------- SKIPPED build ----------'
 	}
 	
 	stage('Sonar'){
