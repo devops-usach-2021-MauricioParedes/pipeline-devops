@@ -77,6 +77,7 @@ def getStageForExecution(String params){
  }
  else
  {
+  println "Ejecución fallida por validacion"
    error "Ejecución fallida por validacion"
    //return params.split(';').toList();
  }
