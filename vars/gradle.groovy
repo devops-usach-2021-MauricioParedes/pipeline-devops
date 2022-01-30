@@ -13,7 +13,7 @@ def call(List<String> paramsAllowedStage){
 	}
 	else
 	{
-		println '------- SKIPPED '+STAGE_SONAR+' ----------'
+		println '------- SKIPPED '+STAGE_BUILD+' ----------'
 	}
 	if (paramsAllowedStage.any{it== STAGE_SONAR})
 	{		
