@@ -67,6 +67,19 @@ def call(){
     
 
 }
+
+def verifyBranchName(){
+  //def is_ci_or_cd=( env.GIT_BRANCH.contains('feature-'))?'CI':'CD'
+  if(env.GIT_BRANCH.contains('feature-') || env.GIT_BRANCH.contains('develop')){
+      return 'CI'
+  }
+  else{
+      return 'CD'
+  }
+
+
+}
+
 def getStageForExecution(String params,String ciOrCd){
  def stages=[]
  if(ciOrCd=='CI')
