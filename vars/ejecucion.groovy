@@ -40,12 +40,12 @@ def call(){
                      figlet 'Pipeline Type: '+ci_or_cd
                      
                      if(params.buildTool=='gradle'){
-                          gradle.call(paramAllowed)
+                          gradle.call(paramAllowed,ci_or_cd)
 
                      }
                      else{
                       
-                          maven.call(paramAllowed)
+                          maven.call(paramAllowed,ci_or_cd)
                        
 
                      }
