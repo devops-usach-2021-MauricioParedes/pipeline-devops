@@ -85,7 +85,7 @@ def getStageForExecution(String params,String ciOrCd){
  if(ciOrCd=='CI')
  {
    //stages=[STAGE_BUILD,STAGE_SONAR,STAGE_RUN,STAGE_REST,STAGE_NEXUSCI]
-    stages=[STAGE_DOWNLOADNEXUS,STAGE_RUNDOWNLOADEDJAR]
+    stages=[STAGE_DOWNLOADNEXUS,STAGE_RUNDOWNLOADEDJAR,STAGE_NEXUSCD]
  }
  else
  {
