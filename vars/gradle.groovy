@@ -1,6 +1,6 @@
-def call(List<String> paramsAllowedStage){
+def call(List<String> paramsAllowedStage,String ciOrCD){
 
-	if (paramsAllowedStage.any{it== STAGE_BUILD})
+	if (paramsAllowedStage.any{it== STAGE_BUILD} && ciOrCD=='CI')
 	{
 		stage(STAGE_BUILD)
 		{
@@ -16,7 +16,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_BUILD+' ----------'
 	}
-	if (paramsAllowedStage.any{it== STAGE_SONAR})
+	if (paramsAllowedStage.any{it== STAGE_SONAR} && ciOrCD=='CI')
 	{		
 		stage(STAGE_SONAR){
 			figlet STAGE_SONAR	
@@ -31,7 +31,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_SONAR+' ----------'
 	}
-	if (paramsAllowedStage.any{it== STAGE_RUN})
+	if (paramsAllowedStage.any{it== STAGE_RUN} && ciOrCD=='CI')
 	{
 		stage(STAGE_RUN){
 			figlet STAGE_RUN
@@ -46,7 +46,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_RUN+' ----------'
 	}
-	if (paramsAllowedStage.any{it==STAGE_REST})
+	if (paramsAllowedStage.any{it==STAGE_REST} && ciOrCD=='CI')
 	{
 		stage(STAGE_REST){
 			figlet STAGE_REST
@@ -60,7 +60,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_REST+' ----------'
 	}
-	if (paramsAllowedStage.any{it==STAGE_NEXUSCI})
+	if (paramsAllowedStage.any{it==STAGE_NEXUSCI} && ciOrCD=='CI')
 	{
 		stage(STAGE_NEXUSCI) {
 			figlet STAGE_NEXUSCI
@@ -87,7 +87,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_NEXUSCI+' ----------'
 	}
-	if (paramsAllowedStage.any{it==STAGE_DOWNLOADNEXUS})
+	if (paramsAllowedStage.any{it==STAGE_DOWNLOADNEXUS} && ciOrCD=='CD')
 	{
 		stage(STAGE_DOWNLOADNEXUS) {
 			figlet STAGE_DOWNLOADNEXUS
@@ -100,7 +100,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_DOWNLOADNEXUS+' ----------'
 	}
-	if (paramsAllowedStage.any{it==STAGE_RUNDOWNLOADEDJAR})
+	if (paramsAllowedStage.any{it==STAGE_RUNDOWNLOADEDJAR} && ciOrCD=='CD')
 	{
 		stage(STAGE_RUNDOWNLOADEDJAR) {
 			figlet STAGE_RUNDOWNLOADEDJAR
@@ -113,8 +113,22 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_RUNDOWNLOADEDJAR+' ----------'
 	}
+	if (paramsAllowedStage.any{it==STAGE_REST} && ciOrCD=='CD')
+	{
+		stage(STAGE_REST){
+			figlet STAGE_REST
+			STAGE=env.STAGE_NAME
+			println "Stage: ${env.STAGE_NAME}"
+            		sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+		}
+			
+	}
+	else
+	{
+		println '------- SKIPPED '+STAGE_REST+' ----------'
+	}
 	
-	if (paramsAllowedStage.any{it==STAGE_NEXUSCD})
+	if (paramsAllowedStage.any{it==STAGE_NEXUSCD} && ciOrCD=='CD')
 	{
 		stage(STAGE_NEXUSCD) {
 			figlet STAGE_NEXUSCD
