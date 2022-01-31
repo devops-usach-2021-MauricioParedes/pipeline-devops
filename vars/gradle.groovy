@@ -140,7 +140,7 @@ def call(List<String> paramsAllowedStage,String ciOrCD){
 				[
 					$class: 'MavenPackage',
 					mavenAssetList: [
-						[classifier: '', extension: '', filePath: 'build/libs/DevOpsUsach2020-0.0.1.jar']
+						[classifier: '', extension: '', filePath: 'DevOpsUsach2020-0.0.1.jar']
 					],
 					mavenCoordinate: [
 						artifactId: 'DevOpsUsach2020',
