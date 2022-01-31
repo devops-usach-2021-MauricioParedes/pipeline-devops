@@ -4,6 +4,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		stage(STAGE_BUILD)
 		{
+			figlet STAGE_BUILD
 			STAGE=env.STAGE_NAME
 			sh 'env'
             		sh './gradlew clean build'
@@ -18,7 +19,7 @@ def call(List<String> paramsAllowedStage){
 	if (paramsAllowedStage.any{it== STAGE_SONAR})
 	{		
 		stage(STAGE_SONAR){
-					
+			figlet STAGE_SONAR	
 			STAGE=env.STAGE_NAME
 			def scannerHome = tool 'sonar-scanner';
 			withSonarQubeEnv('sonar-server') {
@@ -33,6 +34,7 @@ def call(List<String> paramsAllowedStage){
 	if (paramsAllowedStage.any{it== STAGE_RUN})
 	{
 		stage(STAGE_RUN){
+			figlet STAGE_RUN
 			STAGE=env.STAGE_NAME
 			println "Stage: ${env.STAGE_NAME}"
             		sh "nohup bash gradlew bootRun & "
@@ -44,9 +46,10 @@ def call(List<String> paramsAllowedStage){
 	{
 		println '------- SKIPPED '+STAGE_RUN+' ----------'
 	}
-	if (paramsAllowedStage.any{it==STAGE_TEST})
+	if (paramsAllowedStage.any{it==STAGE_REST})
 	{
-		stage(STAGE_TEST){
+		stage(STAGE_REST){
+			figlet STAGE_REST
 			STAGE=env.STAGE_NAME
 			println "Stage: ${env.STAGE_NAME}"
             		sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
@@ -55,12 +58,12 @@ def call(List<String> paramsAllowedStage){
 	}
 	else
 	{
-		println '------- SKIPPED '+STAGE_TEST+' ----------'
+		println '------- SKIPPED '+STAGE_REST+' ----------'
 	}
-	if (paramsAllowedStage.any{it==STAGE_NEXUS})
+	if (paramsAllowedStage.any{it==STAGE_NEXUSCI})
 	{
-		stage(STAGE_NEXUS) {
-					
+		stage(STAGE_NEXUSCI) {
+			figlet STAGE_NEXUSCI
 			STAGE=env.STAGE_NAME
 			nexusPublisher nexusInstanceId: 'test-repo',
 				nexusRepositoryId: 'test-repo',
@@ -82,7 +85,60 @@ def call(List<String> paramsAllowedStage){
 	}
 	else
 	{
-		println '------- SKIPPED '+STAGE_NEXUS+' ----------'
+		println '------- SKIPPED '+STAGE_NEXUSCI+' ----------'
+	}
+	if (paramsAllowedStage.any{it==STAGE_DOWNLOADNEXUS})
+	{
+		stage(STAGE_DOWNLOADNEXUS) {
+			figlet STAGE_DOWNLOADNEXUS
+			sleep 20
+			
+		}
+	}
+	else
+	{
+		println '------- SKIPPED '+STAGE_DOWNLOADNEXUS+' ----------'
+	}
+	if (paramsAllowedStage.any{it==STAGE_RUNDOWNLOADEDJAR})
+	{
+		stage(STAGE_RUNDOWNLOADEDJAR) {
+			figlet STAGE_RUNDOWNLOADEDJAR
+			 sleep 20		
+			
+		}
+	}
+	else
+	{
+		println '------- SKIPPED '+STAGE_RUNDOWNLOADEDJAR+' ----------'
+	}
+	
+	if (paramsAllowedStage.any{it==STAGE_NEXUSCD})
+	{
+		stage(STAGE_NEXUSCD) {
+			figlet STAGE_NEXUSCD
+					
+			STAGE=env.STAGE_NAME
+			nexusPublisher nexusInstanceId: 'test-repo',
+				nexusRepositoryId: 'test-repo',
+				packages: [
+				[
+					$class: 'MavenPackage',
+					mavenAssetList: [
+						[classifier: '', extension: '', filePath: 'build/libs/DevOpsUsach2020-0.0.1.jar']
+					],
+					mavenCoordinate: [
+						artifactId: 'DevOpsUsach2020',
+						groupId: 'com.devopsusach2020',
+						packaging: 'jar',
+						version: '1.0.0'
+					]
+				]
+				]
+		}
+	}
+	else
+	{
+		println '------- SKIPPED '+STAGE_NEXUSCD+' ----------'
 	}
             
         
