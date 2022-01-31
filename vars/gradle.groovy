@@ -91,7 +91,9 @@ def call(List<String> paramsAllowedStage){
 	{
 		stage(STAGE_DOWNLOADNEXUS) {
 			figlet STAGE_DOWNLOADNEXUS
-			sleep 20
+			sh "curl -X GET -u
+				admin:majapafi20 http://localhost:8085/repository/test-repo/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O"		
+			
 			
 		}
 	}
@@ -103,7 +105,8 @@ def call(List<String> paramsAllowedStage){
 	{
 		stage(STAGE_RUNDOWNLOADEDJAR) {
 			figlet STAGE_RUNDOWNLOADEDJAR
-			 sleep 20		
+			sh "nohup java -jar DevOpsUsach2020-0.0.1.jar &"
+			sleep 60
 			
 		}
 	}
