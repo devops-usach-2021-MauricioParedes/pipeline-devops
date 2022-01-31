@@ -8,11 +8,15 @@ def call(){
 
         environment{
          STAGE=''
-         STAGE_BUILD='build'
-         STAGE_TEST='test'
+         STAGE_BUILD='buildAndTest'
          STAGE_SONAR='sonar'
-         STAGE_NEXUS='nexus'
-         STAGE_RUN='run'
+         STAGE_RUN='runJar'
+         STAGE_REST='rest'
+         STAGE_NEXUSCI='nexusCI'
+         
+         STAGE_DOWNLOADNEXUS='downloadNexus'
+         STAGE_RUNDOWNLOADEDJAR='runDownloadedJar'
+         STAGE_NEXUSCD='nexusCD'
        }
 
         parameters {
@@ -26,24 +30,22 @@ def call(){
                          script{
 
                     try{
-                     println 'Pipeline'
-                     println 'stage:'+params.stage
-                     List<String> paramAllowed=getStageForExecution(params.stage)
-                     paramAllowed.each {
-                        println 'elemento:'+it
-                     }
+                     figlet 'Pipeline'
                      
-                    
-                     println params.buildTool
-
+                     def ci_or_cd=verifyBranchName()
+                     List<String> paramAllowed=getStageForExecution(params.stage,ci_or_cd)
+                     
+                                         
+                     figlet params.buildTool
+                     figlet 'Pipeline Type: '+ci_or_cd
+                     
                      if(params.buildTool=='gradle'){
-                                           
                           gradle.call(paramAllowed)
 
                      }
                      else{
-                      println 'Ejecutar maven'
-                      maven.call(paramAllowed)
+                      
+                          maven.call(paramAllowed)
                        
 
                      }
@@ -54,10 +56,6 @@ def call(){
                         slackSend color: 'danger', message: "[${env.USER}][${env.JOB_NAME}][${params.buildTool}] Ejecución fallida en stage [${STAGE}]"
                                                 error "Ejecución fallida en stage ${STAGE}"
                     }
-
-
-
-
                                 }
                         }
 
@@ -69,8 +67,27 @@ def call(){
     
 
 }
-def getStageForExecution(String params){
- def stages=[STAGE_BUILD,STAGE_SONAR,STAGE_RUN,STAGE_TEST,STAGE_NEXUS]
+def getStageForExecution(String params,String ciOrCd){
+ def stages=[]
+ if(ciOrCd=='CI')
+ {
+   stages=[STAGE_BUILD,STAGE_SONAR,STAGE_RUN,STAGE_REST,STAGE_NEXUSCI]
+ }
+ else
+ {
+   if(ciOrCd=='CD')
+   {
+     stages=[STAGE_DOWNLOADNEXUS,STAGE_RUNDOWNLOADEDJAR,STAGE_REST,STAGE_NEXUSCD]
+   }
+   else
+   {
+      figlet "Wrong variable CI_OR_CD"
+      error "Wrong variable CI_OR_CD ${ciOrCd}"
+      return
+    
+   }
+ }
+
  if(params=='')
  {
     return stages
@@ -81,33 +98,12 @@ def getStageForExecution(String params){
   stagesSelected.each{ val-> 
     if(stages.any{it==val}==false)
     {
-       error "stage not found. You can select ${STAGE_BUILD};${STAGE_TEST};${STAGE_RUN};${STAGE_SONAR};${STAGE_NEXUS}"
-       println "stage not found"
+      figlet "stage not found"
+      error "stage not found for ${ciOrCd}"
       return
     }
   }
-  
-  if(stagesSelected.any{it==STAGE_NEXUS} && !stagesSelected.any{it==STAGE_BUILD})
-  {
-    error "If you select ${STAGE_NEXUS} you need use ${STAGE_BUILD} too"
-    println "Ejecución fallida por validacion"
-    return
-   
-  }
-  if(stagesSelected.any{it==STAGE_RUN} && !stagesSelected.any{it==STAGE_BUILD})
-  {
-    error "If you select ${STAGE_RUN} you need use ${STAGE_BUILD} too"
-    println "Ejecución fallida por validacion"
-    return
-   
-  }
-  if(stagesSelected.any{it==STAGE_TEST} && !stagesSelected.any{it==STAGE_RUN})
-  {
-    error "If you select ${STAGE_TEST} you need use ${STAGE_RUN} too"
-    println "Ejecución fallida por validacion"
-    return
-   
-  }
+    
   return stagesSelected
  }
   
