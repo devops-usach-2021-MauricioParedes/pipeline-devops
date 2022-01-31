@@ -91,8 +91,7 @@ def call(List<String> paramsAllowedStage){
 	{
 		stage(STAGE_DOWNLOADNEXUS) {
 			figlet STAGE_DOWNLOADNEXUS
-			sh "curl -X GET -u
-				admin:majapafi20 http://localhost:8085/repository/test-repo/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O"		
+			sh "curl -X GET -u admin:majapafi20 http://localhost:8085/repository/test-repo/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O"		
 			
 			
 		}
