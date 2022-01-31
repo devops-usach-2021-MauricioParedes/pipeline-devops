@@ -1,17 +1,16 @@
 
    
-def call(List<String> paramsAllowedStage){
+def call(List<String> paramsAllowedStage,String ciOrCD){
   
-if (paramsAllowedStage.any{it== STAGE_BUILD})
+if (paramsAllowedStage.any{it== STAGE_BUILD} && ciOrCD=='CI' )
 {
   stage(STAGE_BUILD){
-    
+    	figlet STAGE_BUILD
         STAGE=env.STAGE_NAME
         sh " ./mvnw clean compile -e"
         sh " ./mvnw clean test -e "
         sh " ./mvnw clean package -e "
-        archiveArtifacts 'build/*.jar'
-      
+              
    }
       
 	
@@ -21,10 +20,10 @@ else
 	println '------- SKIPPED '+STAGE_BUILD+' ----------'
 }
 	
-if (paramsAllowedStage.any{it== STAGE_SONAR})
+if (paramsAllowedStage.any{it== STAGE_SONAR} && ciOrCD=='CI' )
 {
 	stage(STAGE_SONAR) { 
-  
+  		figlet STAGE_SONAR
       		STAGE=env.STAGE_NAME
       		def scannerHome = tool 'sonar-scanner'; 
       		withSonarQubeEnv('sonar-server') {
@@ -37,9 +36,10 @@ else
 {
 	println '------- SKIPPED '+STAGE_SONAR+' ----------'
 }
-if (paramsAllowedStage.any{it==STAGE_RUN})
+if (paramsAllowedStage.any{it==STAGE_RUN} && ciOrCD=='CI')
 {
 	stage(STAGE_RUN){
+		figlet STAGE_RUN
       		STAGE=env.STAGE_NAME
     		sh "nohup bash mvnw spring-boot:run &" 
     		sleep 80
@@ -50,22 +50,23 @@ else
 {
 	println '------- SKIPPED '+STAGE_RUN+' ----------'
 }
-if (paramsAllowedStage.any{it==STAGE_TEST})
+if (paramsAllowedStage.any{it==STAGE_REST} && ciOrCD=='CI')
 {
-	stage(STAGE_TEST){
+	stage(STAGE_REST){
+		figlet STAGE_REST
     		STAGE=env.STAGE_NAME
     		sh " curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing' "
   	}
 }
 else
 {
-    println '------- SKIPPED '+STAGE_TEST+' ----------'
+    println '------- SKIPPED '+STAGE_REST+' ----------'
 }
 
-if (paramsAllowedStage.any{it==STAGE_NEXUS})
+if (paramsAllowedStage.any{it==STAGE_NEXUSCI} && ciOrCD=='CI')
 {
-	stage(STAGE_NEXUS){
-  
+	stage(STAGE_NEXUSCI){
+  		figlet STAGE_NEXUSCI
     		STAGE=env.STAGE_NAME
     		nexusPublisher nexusInstanceId: 'test-repo', 
     			nexusRepositoryId: 'test-repo', 
@@ -75,8 +76,78 @@ if (paramsAllowedStage.any{it==STAGE_NEXUS})
 }
 else
 {
-    println '------- SKIPPED '+STAGE_NEXUS+' ----------'
+    println '------- SKIPPED '+STAGE_NEXUSCI+' ----------'
   
+}
+	
+if (paramsAllowedStage.any{it==STAGE_DOWNLOADNEXUS} && ciOrCD=='CD')
+{
+	stage(STAGE_DOWNLOADNEXUS) {
+			figlet STAGE_DOWNLOADNEXUS
+			sh "curl -X GET -u admin:majapafi20 http://localhost:8085/repository/test-repo/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar -O"		
+			
+			
+	}
+}
+else
+{
+	println '------- SKIPPED '+STAGE_DOWNLOADNEXUS+' ----------'
+}
+if (paramsAllowedStage.any{it==STAGE_RUNDOWNLOADEDJAR} && ciOrCD=='CD')
+{
+		stage(STAGE_RUNDOWNLOADEDJAR) {
+			figlet STAGE_RUNDOWNLOADEDJAR
+			sh "nohup java -jar DevOpsUsach2020-0.0.1.jar &"
+			sleep 60
+			
+		}
+}
+else
+{
+		println '------- SKIPPED '+STAGE_RUNDOWNLOADEDJAR+' ----------'
+}
+if (paramsAllowedStage.any{it==STAGE_REST} && ciOrCD=='CD')
+{
+		stage(STAGE_REST){
+			figlet STAGE_REST
+			STAGE=env.STAGE_NAME
+			println "Stage: ${env.STAGE_NAME}"
+            		sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+		}
+			
+}
+else
+{
+		println '------- SKIPPED '+STAGE_REST+' ----------'
+}
+	
+if (paramsAllowedStage.any{it==STAGE_NEXUSCD} && ciOrCD=='CD')
+{
+	stage(STAGE_NEXUSCD) {
+		figlet STAGE_NEXUSCD
+					
+		STAGE=env.STAGE_NAME
+		nexusPublisher nexusInstanceId: 'test-repo',
+				nexusRepositoryId: 'test-repo',
+				packages: [
+				[
+					$class: 'MavenPackage',
+					mavenAssetList: [
+						[classifier: '', extension: '', filePath: 'DevOpsUsach2020-0.0.1.jar']
+					],
+					mavenCoordinate: [
+						artifactId: 'DevOpsUsach2020',
+						groupId: 'com.devopsusach2020',
+						packaging: 'jar',
+						version: '1.0.0'
+					]
+				]
+				]
+		}
+	}
+else
+{
+		println '------- SKIPPED '+STAGE_NEXUSCD+' ----------'
 }
 
 }
